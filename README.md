@@ -3,6 +3,7 @@ VeraProfileCodingStyleEpitech
 ```bash
 cp -rp /usr/lib/vera++ ~/.vera++/
 
+cp -r rules ~/.vera++/scripts/
 cp coding_style_epitech ~/.vera++/profiles/
 cp coding_style_epitech.params ~/.vera++/profiles/
 
