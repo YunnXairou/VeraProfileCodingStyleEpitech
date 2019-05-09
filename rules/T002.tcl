@@ -80,20 +80,22 @@ set keywords {
 }
 
 foreach f [getSourceFileNames] {
+    set rule "T2  > $f"
+
     foreach t [getTokens $f 1 0 -1 -1 {pp_define}] {
         set lineNumber [lindex $t 1]
 
         set line [getLine $f $lineNumber]
-        set rest [string trimleft [string range $line \
+        set ruleest [string trimleft [string range $line \
                                        [expr [lindex $t 2] + [string length [lindex $t 0]]] end]]
-        set macroName [string range $rest 0 [expr [string wordend $rest 0] - 1]]
+        set macroName [string range $ruleest 0 [expr [string wordend $ruleest 0] - 1]]
 
         if {([regexp {^_} $macroName] && [string is upper -strict [string index $macroName 1]]) ||
             [string first "__" $macroName] != -1} {
-            report $f $lineNumber "reserved name used for macro (incorrect use of underscore)"
+            report $rule $lineNumber "reserved name used for macro (incorrect use of underscore)"
         }
         if {[lsearch $keywords $macroName] != -1} {
-            report $f $lineNumber "reserved name used for macro (keyword or alternative token redefined)"
+            report $rule $lineNumber "reserved name used for macro (keyword or alternative token redefined)"
         }
     }
 }

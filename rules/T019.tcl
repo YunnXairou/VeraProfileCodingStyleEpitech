@@ -2,6 +2,7 @@
 # control structures should have complete curly-braced block of code
 
 foreach fileName [getSourceFileNames] {
+    set rule "T19 > $fileName"
 
     set state "start"
     set prev ""
@@ -25,7 +26,7 @@ foreach fileName [getSourceFileNames] {
               # skip
             } elseif {$type != "leftbrace"} {
                 set line [lindex $token 1]
-                report $fileName $line "full block {} expected in the control structure"
+                report $rule $line "full block {} expected in the control structure"
             }
             set state "block"
         }

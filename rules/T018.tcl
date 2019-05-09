@@ -2,6 +2,8 @@
 # using namespace are not allowed in header files
 
 foreach fileName [getSourceFileNames] {
+    set rule "T18 > $fileName"
+
     set extension [file extension $fileName]
     if {[lsearch {.h .hh .hpp .hxx .ipp} $extension] != -1} {
 
@@ -10,7 +12,7 @@ foreach fileName [getSourceFileNames] {
             set type [lindex $token 3]
 
             if {$state == "using" && $type == "namespace"} {
-                report $fileName $usingLine "using namespace not allowed in header file"
+                report $rule $usingLine "using namespace not allowed in header file"
             }
 
             if {$type == "using"} {

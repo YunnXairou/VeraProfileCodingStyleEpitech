@@ -14,6 +14,8 @@ proc isKeyword {s} {
 }
 
 foreach f [getSourceFileNames] {
+    set rule "T4  > $f"
+
     set lastKeywordLine 0
     set lastKeywordColumn 0
     set lastKeywordValue ""
@@ -36,7 +38,7 @@ foreach f [getSourceFileNames] {
                         }
                     }
                     if {$nonWhiteFound == "false"} {
-                        report $f $line "colon not immediately after the \'$lastKeywordValue\' keyword"
+                        report $rule $line "colon not immediately after the \'$lastKeywordValue\' keyword"
                     }
                 }
             }

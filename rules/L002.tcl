@@ -3,13 +3,13 @@
 
 foreach f [getSourceFileNames] {
     if ![regexp {^Makefile$} $f] {
+        set rule "L2  > $f"
         set lineNumber 1
 
         foreach line [getAllLines $f] {
 
             if [regexp {\t} $line] {
-                set r "L2 > $f"
-                report $r $lineNumber "horizontal tab used"
+                report $rule $lineNumber "horizontal tab used"
             }
 
             incr lineNumber

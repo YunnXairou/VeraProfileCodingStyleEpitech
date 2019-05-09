@@ -3,6 +3,7 @@
 
 proc acceptPairs {} {
     global file parens index end
+    set rule "T11 > $file"
 
     while {$index != $end} {
         set nextToken [lindex $parens $index]
@@ -16,22 +17,22 @@ proc acceptPairs {} {
             acceptPairs
 
             if {$index == $end} {
-                report $file $leftParenLine "opening curly bracket is not closed"
+                report $rule $leftParenLine "opening curly bracket is not closed"
                 return
             }
 
             set nextToken [lindex $parens $index]
             incr index
             set tokenValue [lindex $nextToken 0]
-            set rightParenLine [lindex $nextToken 1]
-            set rightParenColumn [lindex $nextToken 2]
+            set ruleightParenLine [lindex $nextToken 1]
+            set ruleightParenColumn [lindex $nextToken 2]
 
-            if {($leftParenLine != $rightParenLine) && ($leftParenColumn != $rightParenColumn)} {
+            if {($leftParenLine != $ruleightParenLine) && ($leftParenColumn != $ruleightParenColumn)} {
                 # make an exception for line continuation
                 set leftLine [getLine $file $leftParenLine]
-                set rightLine [getLine $file $rightParenLine]
-                if {[string index $leftLine end] != "\\" && [string index $rightLine end] != "\\"} {
-                    report $file $rightParenLine "closing curly bracket not in the same line or column"
+                set ruleightLine [getLine $file $ruleightParenLine]
+                if {[string index $leftLine end] != "\\" && [string index $ruleightLine end] != "\\"} {
+                    report $rule $ruleightParenLine "closing curly bracket not in the same line or column"
                 }
             }
         } else {
@@ -41,11 +42,13 @@ proc acceptPairs {} {
 }
 
 foreach file [getSourceFileNames] {
+    set rule "T11 > $file"
+
     set parens [getTokens $file 1 0 -1 -1 {leftbrace rightbrace}]
     set index 0
     set end [llength $parens]
     acceptPairs
     if {$index != $end} {
-        report $file [lindex [lindex $parens $index] 1] "excessive closing bracket?"
+        report $rule [lindex [lindex $parens $index] 1] "excessive closing bracket?"
     }
 }

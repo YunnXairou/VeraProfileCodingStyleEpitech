@@ -22,6 +22,8 @@ proc isKeyword {s} {
 
 set state "other"
 foreach f [getSourceFileNames] {
+    set rule "T3  > $f"
+
     foreach t [getTokens $f 1 0 -1 -1 {}] {
         set tokenValue [lindex $t 0]
         set tokenName [lindex $t 3]
@@ -29,12 +31,12 @@ foreach f [getSourceFileNames] {
             if {$tokenName == "space" && $tokenValue == " "} {
                 set state "space"
             } else {
-                report $f $lineNumber "keyword \'${keywordValue}\' not followed by a single space"
+                report $rule $lineNumber "keyword \'${keywordValue}\' not followed by a single space"
                 set state "other"
             }
         } elseif {$state == "space"} {
             if {$tokenName == "newline"} {
-                report $f $lineNumber "keyword \'${keywordValue}\' not followed by a single space"
+                report $rule $lineNumber "keyword \'${keywordValue}\' not followed by a single space"
             }
             set state "other"
         } else {

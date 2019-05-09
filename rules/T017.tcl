@@ -2,6 +2,8 @@
 # Unnamed namespaces are not allowed in header files
 
 foreach fileName [getSourceFileNames] {
+    set rule "T17 > $fileName"
+
     set extension [file extension $fileName]
     if {[lsearch {.h .hh .hpp .hxx .ipp} $extension] != -1} {
 
@@ -10,7 +12,7 @@ foreach fileName [getSourceFileNames] {
             set type [lindex $token 3]
 
             if {$state == "namespace" && $type == "leftbrace"} {
-                report $fileName $namespaceLine "unnamed namespace not allowed in header file"
+                report $rule $namespaceLine "unnamed namespace not allowed in header file"
             }
 
             if {$type == "namespace"} {
