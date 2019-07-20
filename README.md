@@ -17,6 +17,7 @@ docker run -it --rm \
     -v "$(pwd):/home/epitest/project" \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     -e DISPLAY=$DISPLAY \
+    --device /dev/snd \
     epitechcontent/epitest-docker:vera
 
 $> vera src/**/*.c include/**/*.c tests/**/*.c
